@@ -1,7 +1,7 @@
 /* Post single
 -------------------------------------------------- */
 .post-header {
-    margin: 24px auto var(--content-gap) auto
+    margin: 24px auto var(--content-gap) auto;
 }
 
 .post-title {
@@ -73,7 +73,8 @@
 
 .post-content del {
     text-decoration: none;
-    background: linear-gradient(to right, var(--primary) 100%, transparent 0) 0 50% / 1px 1px repeat-x;
+    background: linear-gradient(to right, var(--primary) 100%, transparent 0) 0
+        50% / 1px 1px repeat-x;
 }
 
 .post-content p,
@@ -113,8 +114,8 @@
     padding-inline-start: 10px;
 }
 
-.post-content dt~dt,
-.post-content dd~dd {
+.post-content dt ~ dt,
+.post-content dd ~ dd {
     margin-top: 10px;
 }
 
@@ -146,8 +147,8 @@
     border-radius: var(--radius);
 }
 
-.post-content li>.highlight {
-    margin-inline-end: 0
+.post-content li > .highlight {
+    margin-inline-end: 0;
 }
 
 .post-content ul pre {
@@ -231,16 +232,16 @@
     margin-bottom: 40px;
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    padding: .5em;
+    padding: 0.5em;
 }
 
 .toc details summary {
-    cursor: zoom-in;
+    cursor: pointer;
     margin-inline-start: 20px;
 }
 
 .toc details[open] summary {
-    cursor: zoom-out;
+    cursor: pointer;
 }
 
 .toc .details {
