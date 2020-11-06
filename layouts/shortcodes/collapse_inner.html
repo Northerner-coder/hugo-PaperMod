@@ -2,11 +2,14 @@
 {{ else }}
     {{ warnf "missing value for param 'summary': %s" .Position }}
 {{ end }}
-<p class="collapse">
-    <details class="details" {{ if (eq (.Get "openByDefault") true) }} open=true {{ end }}>
+<div class="collapse" style = "border: 1px solid var(--border);
+border-radius: var(--radius);
+padding: 0.5em; margin-bottom: 20px; margin-top: 20px;">
+    <details class="details" {{ if (eq (.Get "openByDefault") true) }} open=true {{ end }} style = "
+    padding: 0px 20px;">
     <summary markdown="span" style="cursor: pointer; outline: none;">
         {{ .Get "summary" | markdownify }}
     </summary>
         {{ .Inner | markdownify }}
     </details>
-</p>
+</div>
