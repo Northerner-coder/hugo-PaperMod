@@ -13,9 +13,11 @@
   </h2>
   {{- range .Pages.GroupByDate "January" }}
   <div class="archive-month">
+
     <h3 class="archive-month-header">{{- default .Key (i18n .Key .) -}}<sup
-        class="archive-count">&nbsp;&nbsp;{{ len .Pages }}
+        class="archive-count">&nbsp;&nbsp;{{ len .Pages }}</sup>
     </h3>
+
     <div class="archive-posts">
       {{- range .Pages  }}
       {{- if eq .Kind "page" }}
