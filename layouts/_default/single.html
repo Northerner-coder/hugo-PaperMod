@@ -6,6 +6,9 @@
       {{ .Title }}
       {{- if .Draft }}<div class="entry-isdraft"><sup>&nbsp;&nbsp;[draft]</sup></div>{{- end }}
     </h1>
+    <div class="post-description">
+      {{ .Description }}
+    </div>
     {{- if .Params.hideMeta }}{{ else }}
     <div class="post-meta" width="100%" style="margin-top: 10px;">
       {{- partial "post_meta.html" . -}}
@@ -49,8 +52,10 @@
     {{- end }}
     {{- end}}
   </header>
-  {{- partial "cover.html" (dict "cxt" . "IsHome" false) }}
- 
+
+  {{- $isHidden := ((.Site.Params.cover.hidden | default .Site.Params.cover.hiddenInSingle) | default .Params.cover.hidden )}}
+  {{- partial "cover.html" (dict "cxt" . "IsHome" false "isHidden" $isHidden) }}
+
   {{- if .Params.ShowToc }}
   <div class="toc">
     <details {{if .Params.TocOpen }} open{{ end }}>
