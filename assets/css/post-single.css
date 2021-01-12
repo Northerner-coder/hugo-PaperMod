@@ -238,6 +238,14 @@
     margin: auto;
 }
 
+.post-content img[src*='#wax-width-250px'] {
+    max-width: 300px;
+}
+
+.post-content img[src*='#width-50'] {
+    width: 50%;
+}
+
 .post-content figure > figcaption {
     color: var(--primary);
     font-size: 16px;
