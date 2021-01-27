@@ -238,8 +238,16 @@
     margin: auto;
 }
 
-.post-content img[src*='#wax-width-250px'] {
+.post-content img[src*='#max-width-250px'] {
     max-width: 300px;
+}
+
+.post-content img[src*='#width-400px'] {
+    width: 400px;
+}
+
+.post-content img[src*='#max-width-100'] {
+    max-width: 100%;
 }
 
 .post-content img[src*='#width-50'] {
