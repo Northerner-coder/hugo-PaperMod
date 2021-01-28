@@ -9,7 +9,8 @@
     <div class="post-description">
       {{ .Description }}
     </div>
-    {{- if .Params.hideMeta }}{{ else }}
+
+    {{- if not (.Param "hideMeta") }}
     <div class="post-meta" width="100%" style="margin-top: 10px;">
       {{- partial "post_meta.html" . -}}
       &nbsp;·&nbsp;&nbsp;<svg viewBox="0 0 24 24" aria-hidden="true" width='15px' height="15px" style="margin-top: 4px;" >
@@ -27,6 +28,8 @@
     </div>
     
       {{- if .IsTranslated -}}&nbsp;|&nbsp;
+      {{- if or .Params.author $.Site.Params.author (.Param "ShowReadingTime") (not .Date.IsZero) }}&nbsp;|&nbsp;{{- end -}}
+
       <ul class="i18n_list">
         {{- i18n "translations" | default "Translations"}}:
         {{- range .Translations }}
@@ -52,19 +55,17 @@
     {{- end }}
     {{- end}}
   </header>
-
-  {{- $isHidden := ((.Site.Params.cover.hidden | default .Site.Params.cover.hiddenInSingle) | default .Params.cover.hidden )}}
+  {{- $isHidden := .Params.cover.hidden | default .Site.Params.cover.hiddenInSingle | default .Site.Params.cover.hidden}}
   {{- partial "cover.html" (dict "cxt" . "IsHome" false "isHidden" $isHidden) }}
-
-  {{- if .Params.ShowToc }}
+  {{- if (.Param "ShowToc") }}
   <div class="toc">
-    <details {{if .Params.TocOpen }} open{{ end }}>
+    <details {{if (.Param "TocOpen") }} open{{ end }}>
       <summary accesskey="c" title="(Alt + C)">
         <div class="details">{{- i18n "toc" | default "Table of Contents" }}</div>
       </summary>
-      <blockquote>
+      <div class="inner">
         {{- partial "toc.html" . }}
-      </blockquote>
+      </div>
     </details>
   </div>
   {{- end }}
@@ -80,7 +81,7 @@
       
     </ul>
     {{- end }}
-    <div class="likely likely-big" data-url="{{ .Permalink }}" data-title="{{ .Title }} | {{ .Site.Title }}" >
+    <div class="likely likely-big" data-url="{{ .Permalink }}" data-title="{{ .Title }} | {{ .Site.Title }}" style="margin-bottom: 8px;" >
         <div class="vkontakte"></div>
         <div class="facebook"></div>
         <div class="twitter"></div>
@@ -90,12 +91,33 @@
         <!-- <div class="linkedin"></div> -->
         <!-- <div class="pinterest" data-media="i/pinnable.jpg"></div> -->
     </div>
+    {{- if .Site.Params.ShowPostNavLinks }}
+    {{- $pages := where site.RegularPages "Type" "in" site.Params.mainSections }}
+    {{- if and (gt (len $pages) 1) (in $pages . ) }}
+    <nav class="paginav">
+      {{- with $pages.Next . }}
+      <a class="prev" href="{{.Permalink}}">
+        <span class="title">« {{ i18n "prev_page" }}</span>
+        <br>
+        <span>{{- .Name -}}</span>
+      </a>
+      {{- end}}
+      {{- with $pages.Prev . }}
+      <a class="next" href="{{.Permalink}}">
+        <span class="title">{{ i18n "next_page" }} »</span>
+        <br>
+        <span>{{- .Name -}}</span>
+      </a>
+      {{- end}}
+    </nav>
+    {{- end }}
+    {{- end }}
     {{- if (and .Site.Params.ShowShareButtons (ne .Params.disableShare true) ) }}
     {{- partial "share_icons.html" . }}
     {{- end }}
   </footer>
 
-  {{- if and ($.Site.Params.comments) (ne .Params.comments false) }}
+  {{- if (.Param "comments") }}
   {{- partial "comments.html" . }}
   {{- end }}
 </article>
