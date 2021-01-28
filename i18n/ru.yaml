@@ -1,57 +1,54 @@
 - id: prev_page
-  translation: "Предыдущая"
+  translation: 'Пред.'
 
 - id: next_page
-  translation: "Следующая"
+  translation: 'След.'
 
 - id: read_time
-  translation: 
-    one: "{{ .Count }} мин"
-    other: "{{ .Count }} мин"
-    few: "{{ .Count }} мин"
-    many: "{{ .Count }} мин"
+  translation:
+      one: '{{ .Count }} мин'
+      other: '{{ .Count }} мин'
+      few: '{{ .Count }} мин'
+      many: '{{ .Count }} мин'
 
 - id: toc
-  translation: "Оглавление"
+  translation: 'Оглавление'
 
 - id: translations
-  translation: "Переводы"
+  translation: 'Переводы'
 
 - id: January
-  translation: "Январь"
+  translation: 'Январь'
 
 - id: February
-  translation: "Февраль"
+  translation: 'Февраль'
 
 - id: March
-  translation: "Март"
+  translation: 'Март'
 
 - id: April
-  translation: "Апрель"
+  translation: 'Апрель'
 
 - id: May
-  translation: "Май"
+  translation: 'Май'
 
 - id: June
-  translation: "Июнь"
+  translation: 'Июнь'
 
 - id: July
-  translation: "Июль"
+  translation: 'Июль'
 
 - id: August
-  translation: "Август"
+  translation: 'Август'
 
 - id: September
-  translation: "Сентябрь"
+  translation: 'Сентябрь'
 
 - id: October
-  translation: "Октябрь"
+  translation: 'Октябрь'
 
 - id: November
-  translation: "Ноябрь"
+  translation: 'Ноябрь'
 
 - id: December
-  translation: "Декабрь"
-
-- id: Tags
-  translation: "Теги"
+  translation: 'Декабрь'
