@@ -1,52 +1,54 @@
 - id: prev_page
-  translation: "Prev Page"
+  translation: 'Prev Page'
 
 - id: next_page
-  translation: "Next Page"
+  translation: 'Next Page'
 
 - id: read_time
   translation:
-    one : "1 min"
-    other: "{{ .Count }} min"
+      one: '1 min'
+      other: '{{ .Count }} min'
 
 - id: toc
-  translation: "Table of Contents"
+  translation: 'Table of Contents'
 
 - id: translations
-  translation: "Translations"
+  translation: 'Translations'
 
 - id: January
-  translation: "January"
+  translation: 'January'
 
 - id: February
-  translation: "February"
+  translation: 'February'
 
 - id: March
-  translation: "March"
+  translation: 'March'
 
 - id: April
-  translation: "April"
+  translation: 'April'
 
 - id: May
-  translation: "May"
+  translation: 'May'
 
 - id: June
-  translation: "June"
+  translation: 'June'
 
 - id: July
-  translation: "July"
+  translation: 'July'
 
 - id: August
-  translation: "August"
+  translation: 'August'
 
 - id: September
-  translation: "September"
+  translation: 'September'
 
 - id: October
-  translation: "October"
+  translation: 'October'
 
 - id: November
-  translation: "November"
+  translation: 'November'
 
 - id: December
-  translation: "December"
+  translation: 'December'
+- id: home
+  translation: 'Home'
