@@ -1,144 +1,118 @@
 {{- define "main" }}
 
 <article class="post-single">
-  <header class="post-header">
-    {{- if (.Param "ShowBreadCrumbs")}}
-    <div class="breadcrumbs">
-      {{- $url := replace .Permalink ( printf "%s" .Site.BaseURL) "" }}
-      {{- $lang_url := replace $url ( printf "%s" .Lang) "" }}
-
-      <a href="{{ "" | absLangURL }}">{{ i18n "home" | default "Home"}}</a>
-      {{- range $index, $element := split $lang_url "/" }}
-
-      {{- $.Scratch.Add "path" (printf "%s/" $element )}}
-      {{- $bc_pg := $.Site.GetPage ($.Scratch.Get "path") -}}
-
-      {{- if (and ($bc_pg) (gt (len . ) 0))}}
-      {{- print "&nbsp;»&nbsp;" | safeHTML -}}<a href="{{ $bc_pg.Permalink }}">{{ $bc_pg.Name }}</a>
-      {{- end }}
-
-      {{- end }}
-    </div>
-    {{- end }}
-    <h1 class="post-title">
-      {{ .Title }}
-      {{- if .Draft }}<div class="entry-isdraft"><sup>&nbsp;&nbsp;[draft]</sup></div>{{- end }}
-    </h1>
-    {{- if .Description }}
-    <div class="post-description">
-      {{ .Description }}
-    </div>
-    {{- end }}
-    {{- if not (.Param "hideMeta") }}
-    <div class="post-meta" width="100%" style="margin-top: 10px;">
-      {{- partial "post_meta.html" . -}}
-      &nbsp;·&nbsp;&nbsp;<svg viewBox="0 0 24 24" aria-hidden="true" width='15px' height="15px" style="margin-top: 4px;" >
-          <path style="fill: rgba(0, 0, 0, 0.56);" d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
-        </svg>&nbsp;<span id="hitman-counter"></span>
-      <div class="likely likely" data-url="{{ .Permalink }}" data-title="{{ .Title }} | {{ .Site.Title }}" style="position: absolute; right: calc(var(--gap)); ">
-        <div class="vkontakte"></div>
-        <div class="facebook"></div>
-        <div class="twitter"></div>
-        <div class="telegram"></div>
-        <div class="whatsapp"></div>
-        <!-- <div class="odnoklassniki"></div> -->
-        <!-- <div class="linkedin"></div> -->
-        <!-- <div class="pinterest" data-media="i/pinnable.jpg"></div> -->
-    </div>
-    
-      {{- if .IsTranslated -}}&nbsp;|&nbsp;
-      {{- if or .Params.author $.Site.Params.author (.Param "ShowReadingTime") (not .Date.IsZero) }}&nbsp;|&nbsp;{{- end -}}
-
-      <ul class="i18n_list">
-        {{- i18n "translations" | default "Translations"}}:
-        {{- range .Translations }}
-        <li>
-          <a href="{{ .Permalink }}">
-            {{- if (and $.Site.Params.displayFullLangName (.Language.LanguageName)) }}
-            {{- .Language.LanguageName | emojify | humanize -}}
-            {{- else }}
-            {{- .Lang | humanize -}}
-            {{- end -}}
-          </a>
-        </li>
+    <header class="post-header">
+        {{- partial "breadcrumbs.html" . }}
+        <h1 class="post-title">
+            {{ .Title }}
+            {{- if .Draft }}<div class="entry-isdraft"><sup>&nbsp;&nbsp;[draft]</sup></div>{{- end }}
+        </h1>
+        {{- if .Description }}
+        <div class="post-description">
+            {{ .Description }}
+        </div>
         {{- end }}
-      </ul>
-      {{- end }}
-    </div>
-    {{- if .Params.tags }}
-    <ul class="post-tags" style="padding-top: 8px;">
-      {{- range ($.GetTerms "tags") }}
-      <li><a href="{{ .Permalink }}" style="font-size: 12px; line-height: 22px; padding-inline: 8px;">{{ .LinkTitle }}</a></li>
-      {{- end }}
-    </ul>
-    {{- end }}
-    {{- end}}
-  </header>
-  {{- $isHidden := .Params.cover.hidden | default .Site.Params.cover.hiddenInSingle | default .Site.Params.cover.hidden}}
-  {{- partial "cover.html" (dict "cxt" . "IsHome" false "isHidden" $isHidden) }}
-  {{- if (.Param "ShowToc") }}
-  <div class="toc">
-    <details {{if (.Param "TocOpen") }} open{{ end }}>
-      <summary accesskey="c" title="(Alt + C)">
-        <div class="details">{{- i18n "toc" | default "Table of Contents" }}</div>
-      </summary>
-      <div class="inner">
-        {{- partial "toc.html" . }}
-      </div>
-    </details>
-  </div>
-  {{- end }}
-  <div class="post-content">
-    {{- partial "anchored_headings.html" .Content -}}
-  </div>
-  <footer class="post-footer">
-    {{- if .Params.tags }}
-    <ul class="post-tags">
-      {{- range ($.GetTerms "tags") }}
-      <li><a href="{{ .Permalink }}"  style="font-size: 12px; line-height: 22px; padding-inline: 8px;">{{ .LinkTitle }}</a></li>
-      {{- end }}
-      
-    </ul>
-    {{- end }}
-    <div class="likely likely-big" data-url="{{ .Permalink }}" data-title="{{ .Title }} | {{ .Site.Title }}" style="margin-bottom: 8px;" >
-        <div class="vkontakte"></div>
-        <div class="facebook"></div>
-        <div class="twitter"></div>
-        <div class="telegram"></div>
-        <div class="whatsapp"></div>
-        <div class="odnoklassniki"></div>
-        <!-- <div class="linkedin"></div> -->
-        <!-- <div class="pinterest" data-media="i/pinnable.jpg"></div> -->
-    </div>
-    {{- if .Site.Params.ShowPostNavLinks }}
-    {{- $pages := where site.RegularPages "Type" "in" site.Params.mainSections }}
-    {{- if and (gt (len $pages) 1) (in $pages . ) }}
-    <nav class="paginav">
-      {{- with $pages.Next . }}
-      <a class="prev" href="{{.Permalink}}">
-        <span class="title">« {{ i18n "prev_page" }}</span>
-        <br>
-        <span>{{- .Name -}}</span>
-      </a>
-      {{- end}}
-      {{- with $pages.Prev . }}
-      <a class="next" href="{{.Permalink}}">
-        <span class="title">{{ i18n "next_page" }} »</span>
-        <br>
-        <span>{{- .Name -}}</span>
-      </a>
-      {{- end}}
-    </nav>
-    {{- end }}
-    {{- end }}
-    {{- if (and .Site.Params.ShowShareButtons (ne .Params.disableShare true) ) }}
-    {{- partial "share_icons.html" . }}
-    {{- end }}
-  </footer>
+        {{- if not (.Param "hideMeta") }}
+        <div class="post-meta" width="100%" style="margin-top: 10px;">
+            {{- partial "post_meta.html" . -}}
+            &nbsp;·&nbsp;&nbsp;<svg viewBox="0 0 24 24" aria-hidden="true" width='15px' height="15px"
+                style="margin-top: 4px;">
+                <path style="fill: rgba(0, 0, 0, 0.56);"
+                    d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
+            </svg>&nbsp;<span id="hitman-counter"></span>
+            <div class="likely likely" data-url="{{ .Permalink }}" data-title="{{ .Title }} | {{ .Site.Title }}"
+                style="position: absolute; right: calc(var(--gap)); ">
+                <div class="vkontakte"></div>
+                <div class="facebook"></div>
+                <div class="twitter"></div>
+                <div class="telegram"></div>
+                <div class="whatsapp"></div>
+                <!-- <div class="odnoklassniki"></div> -->
+                <!-- <div class="linkedin"></div> -->
+                <!-- <div class="pinterest" data-media="i/pinnable.jpg"></div> -->
+            </div>
 
-  {{- if (.Param "comments") }}
-  {{- partial "comments.html" . }}
-  {{- end }}
+            {{- partial "translation_list.html" . -}}
+        </div>
+        {{- if .Params.tags }}
+        <ul class="post-tags" style="padding-top: 8px;">
+            {{- range ($.GetTerms "tags") }}
+            <li>
+                <a href="{{ .Permalink }}" style="font-size: 12px; line-height: 22px; padding-inline: 8px;">
+                    {{ .LinkTitle }}
+                </a>
+            </li>
+            {{- end }}
+        </ul>
+        {{- end }}
+        {{- end }}
+    </header>
+    {{- $isHidden := .Params.cover.hidden | default .Site.Params.cover.hiddenInSingle | default .Site.Params.cover.hidden}}
+    {{- partial "cover.html" (dict "cxt" . "IsHome" false "isHidden" $isHidden) }}
+    {{- if (.Param "ShowToc") }}
+    <div class="toc">
+        <details {{if (.Param "TocOpen" ) }} open{{ end }}>
+            <summary accesskey="c" title="(Alt + C)">
+                <div class="details">{{- i18n "toc" | default "Table of Contents" }}</div>
+            </summary>
+            <div class="inner">
+                {{- partial "toc.html" . }}
+            </div>
+        </details>
+    </div>
+    {{- end }}
+    <div class="post-content">
+        {{- partial "anchored_headings.html" .Content -}}
+    </div>
+    <footer class="post-footer">
+        {{- if .Params.tags }}
+        <ul class="post-tags">
+            {{- range ($.GetTerms "tags") }}
+            <li><a href="{{ .Permalink }}" style="font-size: 12px; line-height: 22px; padding-inline: 8px;">{{ .LinkTitle }}</a></li>
+            {{- end }}
+
+        </ul>
+        {{- end }}
+        <div class="likely likely-big" data-url="{{ .Permalink }}" data-title="{{ .Title }} | {{ .Site.Title }}"
+            style="margin-bottom: 8px;">
+            <div class="vkontakte"></div>
+            <div class="facebook"></div>
+            <div class="twitter"></div>
+            <div class="telegram"></div>
+            <div class="whatsapp"></div>
+            <div class="odnoklassniki"></div>
+            <!-- <div class="linkedin"></div> -->
+            <!-- <div class="pinterest" data-media="i/pinnable.jpg"></div> -->
+        </div>
+        {{- if .Site.Params.ShowPostNavLinks }}
+        {{- $pages := where site.RegularPages "Type" "in" site.Params.mainSections }}
+        {{- if and (gt (len $pages) 1) (in $pages . ) }}
+        <nav class="paginav">
+            {{- with $pages.Next . }}
+            <a class="prev" href="{{.Permalink}}">
+                <span class="title">« {{ i18n "prev_page" }}</span>
+                <br>
+                <span>{{- .Name -}}</span>
+            </a>
+            {{- end}}
+            {{- with $pages.Prev . }}
+            <a class="next" href="{{.Permalink}}">
+                <span class="title">{{ i18n "next_page" }} »</span>
+                <br>
+                <span>{{- .Name -}}</span>
+            </a>
+            {{- end}}
+        </nav>
+        {{- end }}
+        {{- end }}
+        {{- if (and .Site.Params.ShowShareButtons (ne .Params.disableShare true) ) }}
+        {{- partial "share_icons.html" . }}
+        {{- end }}
+    </footer>
+
+    {{- if (.Param "comments") }}
+    {{- partial "comments.html" . }}
+    {{- end }}
 </article>
 
-{{- end  }}{{/* end main */}}
+{{- end }}{{/* end main */}}
